@@ -111,7 +111,8 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
-
+  p->count = 0;
+  p->flag = 0;
   return p;
 }
 
@@ -532,3 +533,51 @@ procdump(void)
     cprintf("\n");
   }
 }
+int cps()
+{
+
+struct proc *p;	// Enable interrupts on this processor. sti();
+// Loop over process table looking for process with pid. acquire(&ptable.lock);	// acquiring lock before use of critical section 
+cprintf("name \t pid \t state \n");
+acquire(&ptable.lock);
+for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) // checking process table
+
+{
+
+if(p->state == SLEEPING)
+
+cprintf("%s \t %d \t SLEEPING \n", p->name, p->pid); // printing pid,pname,state 
+else if(p->state == RUNNING)
+cprintf("%s \t %d \t RUNNING \n", p->name, p->pid);
+
+}
+
+release(&ptable.lock);	// releasing acquired lock 
+return 22;
+}
+int
+getChildren(int id)
+{
+	
+struct proc *p;	// Enable interrupts on this processor. sti();
+// Loop over process table looking for process with pid. acquire(&ptable.lock);	// acquiring lock before use of critical section 
+cprintf("name \t pid \t state \n");
+acquire(&ptable.lock);
+for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) // checking process table
+
+{
+	if (p->parent->pid == id) 
+	{
+		if(p->state == SLEEPING)
+
+			cprintf("%s \t %d \t SLEEPING \n", p->name, p->pid); // printing pid,pname,state 
+		else if(p->state == RUNNING)
+			cprintf("%s \t %d \t RUNNING \n", p->name, p->pid);
+	}
+
+}
+
+release(&ptable.lock);	// releasing acquired lock 
+return 22;
+}
+

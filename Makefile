@@ -184,6 +184,10 @@ UPROGS=\
 	_Linear_Search\
 	_Bubble_Sort\
 	_SelectionSort\
+	_ps\
+	_trace\
+	_clear\
+	_Get_Children\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
